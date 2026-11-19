@@ -18,9 +18,23 @@ const uid = auth.user.id;
 const path = `${uid}/js-${Date.now()}.txt`;
 const body = new TextEncoder().encode('12345678901234567890123456789012');
 const started = Date.now();
-const result = await Promise.race([
-  client.storage.from('private-assets').upload(path, body, { contentType: 'text/plain', upsert: false }),
-  new Promise(resolve => setTimeout(() => resolve({ data: null, error: { status: 599, message: 'client timeout after 15000ms' } }), 15000)),
-]);
-console.log(JSON.stringify({ method: 'supabase-js', api_host: base.hostname, api_port: base.port, uid, path, bytes: body.byteLength, duration_ms: Date.now() - started, status: result.error?.status ?? 200, code: result.error?.code ?? null, message: result.error?.message ?? null }));
-if (result.error) process.exitCode = 1;
+const result = await client.storage.from('private-assets').upload(path, body, { contentType: 'text/plain', upsert: false });
+if (result.error) throw result.error;
+const own = await client.storage.from('private-assets').download(path);
+if (own.error || new TextDecoder().decode(await own.data.arrayBuffer()) !== '12345678901234567890123456789012') throw own.error ?? new Error('owner download mismatch');
+const other = createClient(env.API_URL, key, { auth: { persistSession: false } });
+const otherAuth = await other.auth.signInWithPassword({ email: 'student-b@example.test', password: 'fixture-password' });
+if (otherAuth.error) throw otherAuth.error;
+const denied = await other.storage.from('private-assets').download(path);
+if (!denied.error) throw new Error('cross-user download unexpectedly allowed');
+const signed = await client.storage.from('private-assets').createSignedUrl(path, 60);
+if (signed.error) throw signed.error;
+const signedResponse = await fetch(signed.data.signedUrl);
+if (signedResponse.status !== 200) throw new Error(`signed URL ${signedResponse.status}`);
+const removed = await client.storage.from('private-assets').remove([path]);
+if (removed.error) throw removed.error;
+const afterList = await client.storage.from('private-assets').list(uid, { search: path.split('/').pop() });
+if (afterList.error) throw afterList.error;
+if (afterList.data.some(item => item.name === path.split('/').pop())) throw new Error('deleted object remains listed');
+const afterResponse = await fetch(`${env.API_URL}/storage/v1/object/private-assets/${path}?cache_bust=${Date.now()}`, { headers: { Authorization: `Bearer ${auth.session.access_token}`, apikey: key } });
+console.log(JSON.stringify({ method: 'supabase-js', api_host: base.hostname, api_port: base.port, uid, path, owner_upload: 200, owner_download: 200, cross_user_denied: denied.error.status ?? 400, signed_url: signedResponse.status, delete: 200, post_delete_listed: false, post_delete_http: afterResponse.status }));
