@@ -23,7 +23,7 @@ Every item requires fresh evidence before status promotion.
 | E12 | Accessibility audit | TODO | P1 | All UI routes | Keyboard navigation, labels, focus, contrast, responsive viewport, reduced motion; no critical findings | Static lint/build only; full audit pending | — |
 | E13 | Full acceptance regression | TODO | P0 | E01–E12 | End-to-end student/BK/reviewer/admin acceptance matrix passes locally; evidence stored | 114 pgTAP + partial HTTP matrix; full acceptance pending | — |
 | E14 | Counseling notes/summary/follow-up browser/API acceptance | IN_PROGRESS | P0 | E01; counseling APIs | Browser/API lifecycle proves revision/audit/privacy/publication/revocation/follow-up for Student A/B/BK/Admin | 95 pgTAP; browser/parallel HTTP pending | `05def60` |
-| E15 | Public API runtime matrix | IN_PROGRESS | P1 | E02; public seed | Anonymous announcements/courses return allowlisted JSON; private tables denied; cache headers present | Current Next route 503; local PostgREST projection tested earlier | `9f6fabe` |
+| E15 | Public API runtime matrix | VERIFIED | P1 | E02; public seed | Anonymous announcements/courses return allowlisted JSON; private tables denied; cache headers present | Local Next `/api/public/v1/announcements` and `/courses`: HTTP 200, JSON, `public, max-age=60, stale-while-revalidate=300`; embeds HTTP 200 | current local verification |
 | E16 | Security/deployment final audit | TODO | P0 | E04–E13 | Secret scan, dependency audit, RLS inventory, headers, error redaction, no service-role auth tests | Static SQL audit PASS; final audit pending | — |
 
 ## Execution order
