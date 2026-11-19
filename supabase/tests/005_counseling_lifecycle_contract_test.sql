@@ -1,0 +1,12 @@
+begin;
+select plan(8);
+select ok(to_regprocedure('public.offer_counseling_slot(uuid,uuid,uuid)') is not null, 'offer function exists');
+select ok(to_regprocedure('public.confirm_counseling_appointment(uuid,uuid)') is not null, 'confirm function exists');
+select ok(to_regprocedure('public.cancel_counseling_appointment(uuid,uuid,text)') is not null, 'cancel function exists');
+select ok(to_regprocedure('public.reschedule_counseling_appointment(uuid,uuid,uuid)') is not null, 'reschedule function exists');
+select has_table('public','counseling_note_revisions','private note revisions table exists');
+select has_table('public','counseling_audit_events','counseling audit table exists');
+select ok(to_regprocedure('public.publish_counseling_summary(uuid,uuid,text)') is not null, 'summary publication function exists');
+select ok(to_regprocedure('public.revoke_counseling_summary(uuid,uuid)') is not null, 'summary revocation function exists');
+select * from finish();
+rollback;
