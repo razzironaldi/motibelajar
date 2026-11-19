@@ -28,7 +28,11 @@ export async function POST(request: Request) {
   const categories = ["belajar", "pribadi", "sosial", "karier", "lainnya"];
   const urgency = body?.urgency === "segera" ? "segera" : "normal";
   if (reason.length < 1 || reason.length > 2000 || !categories.includes(category)) return envelope(null, { code: "invalid_input" }, requestId, 400);
-  const { data: counselorId } = await supabase.rpc("current_primary_bk", { p_student_id: user.id });
+  const { data: counselorId, error: counselorError } = await supabase.rpc("current_primary_bk", { p_student_id: user.id });
+  if (counselorError) {
+    console.error("counseling_request_primary_bk_failed", { requestId, code: counselorError.code, message: counselorError.message, details: counselorError.details, hint: counselorError.hint });
+    return envelope(null, { code: "counselor_lookup_failed" }, requestId, 500);
+  }
   if (!counselorId) return envelope(null, { code: "no_assigned_counselor" }, requestId, 409);
   const { data, error } = await supabase.from("counseling_requests").insert({ student_id: user.id, assigned_counselor_id: counselorId, reason, category, urgency, availability_json: body?.availability ?? {} }).select("id,category,urgency,status,created_at").single();
   if (error) return envelope(null, { code: "create_failed" }, requestId, 500);
