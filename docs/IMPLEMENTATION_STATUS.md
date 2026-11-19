@@ -22,7 +22,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Publication/revocation worker | IN_PROGRESS | DB guarded functions added; Storage copy/delete worker + tests pending |
 | Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; included in 64 pgTAP PASS |
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
-| Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication RPCs added; authenticated runtime and BK UI pending |
+| Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |
 | Assessment | NOT_STARTED | Existing schema only partial |
 | LMS | NOT_STARTED | Existing schema only partial |
 | Notifications | IN_PROGRESS | Table/RLS added; event producers pending |
