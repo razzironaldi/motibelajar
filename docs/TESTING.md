@@ -13,12 +13,13 @@ npm run build
 
 ## Current evidence
 
-- `db:reset`: PASS; migrations 0001, 0002, 0003 applied locally.
+- `db:reset`: PASS; migrations 0001–0011 applied locally, seed.sql loaded.
 - `db:lint`: PASS; No schema errors found.
-- `db:test`: PASS; 3 files, 37 tests.
-- `db:audit`: PASS; 37 tables, 19 policies, structural guardrails only.
+- `db:test`: PASS; 19 files, 114 tests.
+- `db:audit`: PASS; 59 tables, 54 policies, structural guardrails only.
 - `npm run lint`: PASS; 0 errors.
-- `npm run build`: PASS; TypeScript compilation and 14 routes generated.
+- `npm run build`: PASS; TypeScript compilation and 30 routes generated.
+- `scripts/test_local_api.py`: 19 authorization checks PASS; Storage subchecks may report synthetic HTTP 599 timeout despite standalone direct HTTP Storage PASS.
 
 ## Required next gates
 
