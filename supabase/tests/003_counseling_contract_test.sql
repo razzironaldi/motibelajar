@@ -1,0 +1,10 @@
+begin;
+select plan(6);
+select has_table('public','counseling_requests','counseling requests table exists');
+select has_table('public','counseling_slots','counseling slots table exists');
+select has_table('public','counseling_appointments','counseling appointments table exists');
+select has_table('public','counseling_summaries','counseling summaries table exists');
+select has_table('public','counseling_follow_ups','counseling follow-ups table exists');
+select has_table('public','sharing_permissions','sharing permissions table exists');
+select * from finish();
+rollback;
