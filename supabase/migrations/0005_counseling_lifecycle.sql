@@ -16,6 +16,8 @@ revoke all on function public.create_counseling_slot(uuid,timestamptz,timestampt
 grant execute on function public.create_counseling_slot(uuid,timestamptz,timestamptz,text,text) to authenticated;
 
 create table public.counseling_slot_overlap_guard (dummy boolean primary key default true);
+alter table public.counseling_slot_overlap_guard enable row level security;
+revoke all on public.counseling_slot_overlap_guard from anon, authenticated;
 -- The RPC locks the counselor's slot set through the transaction; overlapping slots are rejected before insert.
 
 create or replace function public.counseling_actor_can_manage(p_counselor_id uuid, p_student_id uuid)
