@@ -28,13 +28,12 @@ export async function POST(request: Request) {
   const categories = ["belajar", "pribadi", "sosial", "karier", "lainnya"];
   const urgency = body?.urgency === "segera" ? "segera" : "normal";
   if (reason.length < 1 || reason.length > 2000 || !categories.includes(category)) return envelope(null, { code: "invalid_input" }, requestId, 400);
-  const { data: counselorId, error: counselorError } = await supabase.rpc("current_primary_bk", { p_student_id: user.id });
-  if (counselorError) {
-    console.error("counseling_request_primary_bk_failed", { requestId, code: counselorError.code, message: counselorError.message, details: counselorError.details, hint: counselorError.hint });
-    return envelope(null, { code: "counselor_lookup_failed" }, requestId, 500);
+  const { data: requestIdValue, error: createError } = await supabase.rpc("create_counseling_request", { p_category: category, p_urgency: urgency, p_reason: reason, p_availability_json: body?.availability ?? {} });
+  if (createError) {
+    console.error("counseling_request_create_failed", { requestId, code: createError.code, message: createError.message, details: createError.details, hint: createError.hint });
+    return envelope(null, { code: createError.code === "23503" ? "no_assigned_counselor" : "create_failed" }, requestId, createError.code === "23503" ? 409 : 500);
   }
-  if (!counselorId) return envelope(null, { code: "no_assigned_counselor" }, requestId, 409);
-  const { data, error } = await supabase.from("counseling_requests").insert({ student_id: user.id, assigned_counselor_id: counselorId, reason, category, urgency, availability_json: body?.availability ?? {} }).select("id,category,urgency,status,created_at").single();
-  if (error) return envelope(null, { code: "create_failed" }, requestId, 500);
+  const { data, error } = await supabase.from("counseling_requests").select("id,category,urgency,status,created_at").eq("id", requestIdValue).single();
+  if (error) return envelope(null, { code: "create_readback_failed" }, requestId, 500);
   return envelope(data, null, requestId, 201);
 }

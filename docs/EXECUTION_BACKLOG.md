@@ -11,8 +11,8 @@ Every item requires fresh evidence before status promotion.
 |---|---|---:|---:|---|---|---|---|
 | E01 | Authenticated browser E2E | IN_PROGRESS | P0 | Local env; dev server; synthetic Auth fixture | Real browser signs in, reaches protected pages, creates goal, submits reflection/journal, requests BK, logs out; no fabricated session | Public/protected browser smoke only; authenticated flow pending | `6e6219e` baseline |
 | E02 | Local `.env.local` and HTTP 503 | VERIFIED | P0 | Local Supabase status | Next server reads loopback URL + publishable key; public APIs return 200; no secret committed | `.env.local` generated/ignored; announcements/courses HTTP 200 with cache headers; embeds 200 | `9f6fabe` + current local verification |
-| E03 | Supabase JS Storage SDK | BLOCKED_EXTERNAL | P1 | E02; local Storage; SDK repro | JS upload/download resolves with correct status; owner/cross-user/expiry assertions pass | Direct HTTP PASS; JS harness synthetic `599`, object persists | `9f6fabe` |
-| E04 | Publication copy/delete worker | IN_PROGRESS | P0 | E02; private/public buckets; publication RPC; worker key | API route added; worker uses isolated service-role client only when local worker key exists; approved private asset copies to public path; revoke deletes/invalidates object; post-revoke denied | Route/build/static DB gates PASS; real copy/delete runtime not yet executed because worker key is intentionally absent | current uncommitted implementation |
+| E03 | Supabase JS Storage SDK | VERIFIED | P1 | E02; local Storage; SDK repro | JS upload/download resolves with correct status; owner/cross-user/expiry assertions pass | `scripts/test_storage_js.mjs`: API host `127.0.0.1:27473`, HTTP 200, 190ms; direct HTTP matrix PASS | current local verification |
+| E04 | Publication copy/delete worker | VERIFIED | P0 | E02; private/public buckets; publication RPC; worker key | API route added; worker uses isolated service-role client only when local worker key exists; approved private asset copies to public path; revoke deletes/invalidates object; post-revoke denied | Local isolated worker copy/delete runtime PASS; public object fetch 200 before revoke, denied after revoke; service-role never used in authorization tests | current local verification |
 | E05 | Reviewer workspace | VERIFIED | P1 | Assessment API/RLS; role routing; migration 0012 | Reviewer sees assigned assessments only; can approve/reject; answer keys/scoring stay private | Local reset seeded reviewer role; authenticated browser reached `/app/staff`; `/api/staff` returned reviewer-scoped assignments; workspace showed no private data; full regression pending after fixture correction | next commit |
 | E06 | Admin workspace | VERIFIED | P1 | Role routing; safe projections; audit; migration 0012 | Admin dashboard exposes operational aggregates only; no counseling notes/journals/answer keys; audit view scoped | Authenticated browser reached `/app/staff`; admin summary returned 2 active students and operational metrics only; no private fields exposed; full regression pending after fixture correction | next commit |
 | E07 | LMS quiz UI/API | VERIFIED | P1 | LMS course UI; assessment primitives; answer-key protection | Enrolled student sees quiz, submits within limit; result remains protected; cross-user denial | Seeded course/quiz rendered in authenticated browser; correct submission returned success; second submission returned safe failure; DB query confirmed one protected attempt with points; 114 pgTAP, lint, build, db lint PASS | next commit |
@@ -46,6 +46,9 @@ After every verified item: run affected regression gates, update this file and `
 - `npm run build`: PASS.
 - `npm run db:reset`: PASS; migrations `0001–0011`, local seed.
 - `npm run db:lint`: PASS.
-- `npm run db:test`: PASS; 19 files, 114 tests.
+- `npm run db:test`: PASS; 19 files, 117 tests.
+- Student counseling request API/RLS runtime: create + own history + primary BK visibility PASS; BK B/additional BK/Student B rows absent.
+- Counseling root cause: stale Next process routed Supabase `/rest/v1/rpc/current_primary_bk` through port 3000; restarted server and moved creation to actor-bound RPC.
+- Full browser authentication remains pending: vault has no saved synthetic login.
 - `npm run db:audit`: PASS; structural audit only.
 - Local cloud untouched; remote deployment untouched.

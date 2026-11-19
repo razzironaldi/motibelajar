@@ -13,14 +13,14 @@ Environment: local Docker Supabase only. Cloud untouched.
 | pgTAP foundation + authorization + domain contract | VERIFIED | 3 files, 37 tests, PASS |
 | Static SQL audit | VERIFIED | `tables=37`, `policies=19`, structural audit PASS |
 | Local Storage HTTP lifecycle | VERIFIED | Existing evidence: upload/download/signed URL/expiry |
-| Storage JS client completion | BLOCKED | Server creates object, client promise timeout remains |
+| Storage JS client completion | VERIFIED | `scripts/test_storage_js.mjs` upload HTTP 200 via `127.0.0.1:27473` in 190ms |
 | Public projection API | VERIFIED | `.env.local` generated from local status; announcements/courses HTTP 200 with public cache headers; embeds HTTP 200; payload currently empty because seed has no projection rows |
 | Student goals | VERIFIED | Migration, RLS, GET/POST route, SSR UI; browser flow pending |
 | Motivation reflection | IN_PROGRESS | Versioned instrument, 1–4 answers, transactional submit, immutable result, Student A/B tests, API/UI added; browser flow pending |
 | Journal/reflection | IN_PROGRESS | Private student-owned entries, revision history, API/UI, Student A/B/Admin isolation tests; browser flow pending |
 | SSR/browser E2E | IN_PROGRESS | Local browser harness rendered landing page; protected `/app` returned 307 to `/login`; follow-up navigation timed out, authenticated flow pending |
-| Publication/revocation worker | IN_PROGRESS | API route + isolated service-role Storage worker client added; runtime copy/delete evidence pending because local worker key is intentionally not configured |
-| Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; included in 64 pgTAP PASS |
+| Publication/revocation worker | VERIFIED | Isolated local worker copy/delete runtime; anonymous public fetch allowed before revoke, denied after revoke |
+| Counseling request | VERIFIED | Actor-bound create RPC; Student A create/history, primary BK read, BK B/additional BK/Student B denial runtime; 117 pgTAP PASS |
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
 | Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |
 | Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, student UI/API added; reviewer RPC/API/page added; authenticated reviewer mutation pending |
