@@ -19,7 +19,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Motivation reflection | IN_PROGRESS | Versioned instrument, 1–4 answers, transactional submit, immutable result, Student A/B tests, API/UI added; browser flow pending |
 | Journal/reflection | IN_PROGRESS | Private student-owned entries, revision history, API/UI, Student A/B/Admin isolation tests; browser flow pending |
 | SSR/browser E2E | IN_PROGRESS | Local browser harness rendered landing page; protected `/app` returned 307 to `/login`; follow-up navigation timed out, authenticated flow pending |
-| Publication/revocation worker | IN_PROGRESS | DB guarded functions added; Storage copy/delete worker + tests pending |
+| Publication/revocation worker | IN_PROGRESS | API route + isolated service-role Storage worker client added; runtime copy/delete evidence pending because local worker key is intentionally not configured |
 | Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; included in 64 pgTAP PASS |
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
 | Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |

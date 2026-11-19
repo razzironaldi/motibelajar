@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import AssessmentForm from "./assessment-form";
 
 export default async function AssessmentPage() {
+  await connection();
   const supabase = await createClient();
   const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
   const { data: assignments } = user && supabase ? await supabase.from("assessment_assignments").select("id,opens_at,closes_at,attempt_limit,assessment_versions(assessment_id,version_no,assessments(name,purpose))").eq("student_id", user.id).order("opens_at", { ascending: false }) : { data: [] };
