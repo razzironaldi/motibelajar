@@ -61,7 +61,7 @@ declare result public.file_publications;
 begin
   if p_actor_id <> (select auth.uid()) then raise exception 'actor mismatch'; end if;
   if not exists (select 1 from public.profiles where id=p_actor_id and role in ('admin','bk_teacher') and active) then raise exception 'not authorized'; end if;
-  if p_public_object_path is null or p_public_object_path !~ '^[a-zA-Z0-9/_-]+$' then raise exception 'invalid public object path'; end if;
+  if p_public_object_path is null or p_public_object_path !~ '^[a-zA-Z0-9._/-]+$' then raise exception 'invalid public object path'; end if;
   insert into public.file_publications(file_asset_id, published_by, public_object_path, status)
   select p_file_asset_id, p_actor_id, p_public_object_path, 'approved'
   where exists (select 1 from public.file_assets where id=p_file_asset_id and bucket='private-assets' and visibility='private')
