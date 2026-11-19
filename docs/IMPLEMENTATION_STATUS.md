@@ -25,7 +25,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |
 | Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, student UI/API added; reviewer RPC/API/page added; authenticated reviewer mutation pending |
 | LMS | VERIFIED | Published enrolled course/lesson read, progress RPC/API, protected quiz submit with attempt limit, seeded authenticated browser submission; Student A/B/Admin isolation tests; 114 pgTAP PASS |
-| Notifications | IN_PROGRESS | Idempotent counseling request/appointment producers + runtime RLS test; broader goal/LMS/assessment producers pending |
+| Notifications | VERIFIED | Idempotent counseling request/appointment producers plus goal/LMS/assessment triggers; runtime recipient/idempotency/validation assertions; 117 pgTAP PASS |
 | Admin/BK workspaces | VERIFIED | BK queue role-sensitive; reviewer/admin staff RPCs, API, workspace page; authenticated reviewer/admin browser routes and scoped API responses verified locally |
 
 ## Current checkpoint
