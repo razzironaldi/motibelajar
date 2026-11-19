@@ -23,7 +23,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; included in 64 pgTAP PASS |
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
 | Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |
-| Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, API added; UI and reviewer workflow pending |
+| Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, student UI/API added; reviewer workflow pending |
 | LMS | IN_PROGRESS | Published enrolled course/lesson read, progress RPC/API, Student A/B/Admin isolation tests; enrolled course UI + progress mutation added; quiz workflow pending |
 | Notifications | IN_PROGRESS | Table/RLS added; event producers pending |
 | Admin/BK workspaces | IN_PROGRESS | BK queue now role-sensitive in shared workspace; admin/reviewer workspace and browser-authenticated role evidence pending |

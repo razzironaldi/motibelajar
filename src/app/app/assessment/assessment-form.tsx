@@ -1,0 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
+type Question = { question_id: string; prompt: string; type: string; dimension: string | null; order_no: number; option_id: string | null; option_label: string | null };
+export default function AssessmentForm({ assignmentId }: { assignmentId: string }) {
+  const [questions, setQuestions] = useState<Question[]>([]); const [answers, setAnswers] = useState<Record<string, string>>({}); const [state, setState] = useState("Memuat pertanyaan…");
+  useEffect(() => { fetch(`/api/assessment?assignmentId=${assignmentId}`).then((r) => r.json()).then((body) => { if (Array.isArray(body.data)) { setQuestions(body.data); setState(""); } else setState("Assessment tidak tersedia."); }).catch(() => setState("Assessment tidak tersedia.")); }, [assignmentId]);
+  const grouped = questions.reduce<Record<string, Question[]>>((all, item) => { (all[item.question_id] ??= []).push(item); return all; }, {});
+  async function submit(event: React.FormEvent) { event.preventDefault(); setState("Mengirim…"); const response = await fetch("/api/assessment", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ assignmentId, answers: Object.entries(answers).map(([questionId, optionId]) => ({ questionId, optionId })) }) }); setState(response.ok ? "Jawaban tersimpan." : "Jawaban belum tersimpan. Coba lagi."); }
+  return <form className="mt-5 space-y-5" onSubmit={submit}>{state && <p className="text-sm text-slate-600" role="status">{state}</p>}{Object.values(grouped).map((options) => <fieldset className="rounded-2xl bg-slate-50 p-4" key={options[0].question_id}><legend className="font-medium text-slate-950">{options[0].prompt}</legend><div className="mt-3 space-y-2">{options.filter((option) => option.option_id).map((option) => <label className="flex cursor-pointer gap-2 text-sm text-slate-700" key={option.option_id}><input required type="radio" name={option.question_id} value={option.option_id ?? ""} onChange={(event) => setAnswers((current) => ({ ...current, [option.question_id]: event.target.value }))} />{option.option_label}</label>)}</div></fieldset>)}{questions.length > 0 && <button className="button button-dark" type="submit">Kirim jawaban</button>}</form>;
+}

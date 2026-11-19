@@ -9,6 +9,7 @@ const studentNavigation = [
   { href: "/app", label: "Ringkasan", icon: "⌂" },
   { href: "/app/belajar", label: "Tujuan belajar", icon: "◒" },
   { href: "/app/kursus", label: "Kursus", icon: "▤" },
+  { href: "/app/assessment", label: "Assessment", icon: "✓" },
   { href: "/app/motivasi", label: "Motivasi", icon: "✦" },
   { href: "/app/jurnal", label: "Jurnal", icon: "✎" },
   { href: "/app/bk", label: "Pendampingan BK", icon: "◌" },
