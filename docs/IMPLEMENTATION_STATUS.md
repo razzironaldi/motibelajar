@@ -15,7 +15,8 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Local Storage HTTP lifecycle | VERIFIED | Existing evidence: upload/download/signed URL/expiry |
 | Storage JS client completion | BLOCKED | Server creates object, client promise timeout remains |
 | Public projection API | IN_PROGRESS | Routes added; runtime API request pending |
-| Student goals | IN_PROGRESS | Migration, RLS, GET/POST route, SSR UI added; browser flow pending |
+| Student goals | VERIFIED | Migration, RLS, GET/POST route, SSR UI; browser flow pending |
+| Motivation reflection | IN_PROGRESS | Versioned instrument, 1–4 answers, transactional submit, immutable result, Student A/B tests, API/UI added; browser flow pending |
 | SSR/browser E2E | NOT_STARTED | Real browser session not yet executed |
 | Publication/revocation worker | IN_PROGRESS | DB guarded functions added; Storage copy/delete worker + tests pending |
 | Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; included in 64 pgTAP PASS |

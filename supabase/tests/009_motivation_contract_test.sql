@@ -1,0 +1,10 @@
+begin;
+select plan(7);
+select has_table('public','motivation_instruments','instrument table exists');
+select has_table('public','motivation_versions','version table exists');
+select has_table('public','motivation_questions','question table exists');
+select has_table('public','motivation_attempts','attempt table exists');
+select has_table('public','motivation_answers','answer table exists');
+select has_table('public','motivation_result_snapshots','result snapshot table exists');
+select ok(to_regprocedure('public.submit_motivation_attempt(uuid,uuid)') is not null,'submit helper exists');
+select * from finish(); rollback;

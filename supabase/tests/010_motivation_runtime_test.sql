@@ -1,0 +1,20 @@
+begin;
+\ir fixtures/roles.fixture
+grant select (id,role,active) on public.profiles to authenticated;
+grant select,insert,update on public.motivation_instruments,public.motivation_versions,public.motivation_questions,public.motivation_attempts,public.motivation_answers,public.motivation_result_snapshots to authenticated;
+select plan(6);
+insert into public.motivation_instruments(id,name,active) values ('70000000-0000-0000-0000-000000000001','Demo Motivation',true);
+insert into public.motivation_versions(id,instrument_id,version_no,status) values ('70000000-0000-0000-0000-000000000011','70000000-0000-0000-0000-000000000001',1,'published');
+insert into public.motivation_questions(id,version_id,prompt,dimension,order_no) values ('70000000-0000-0000-0000-000000000101','70000000-0000-0000-0000-000000000011','Saya punya target belajar','planning',1),('70000000-0000-0000-0000-000000000102','70000000-0000-0000-0000-000000000011','Saya dapat mulai belajar','action',2);
+select public.test_as('10000000-0000-0000-0000-000000000001'::uuid); set local role authenticated;
+insert into public.motivation_attempts(id,version_id,student_id) values ('70000000-0000-0000-0000-000000000201','70000000-0000-0000-0000-000000000011','10000000-0000-0000-0000-000000000001');
+insert into public.motivation_answers(attempt_id,question_id,value) values ('70000000-0000-0000-0000-000000000201','70000000-0000-0000-0000-000000000101',3),('70000000-0000-0000-0000-000000000201','70000000-0000-0000-0000-000000000102',4);
+select ok(public.submit_motivation_attempt('70000000-0000-0000-0000-000000000201'::uuid,'10000000-0000-0000-0000-000000000001'::uuid) is not null,'Student A can submit own attempt');
+select is((select status from public.motivation_attempts where id='70000000-0000-0000-0000-000000000201'),'submitted','attempt becomes immutable submitted');
+select is((select total_score from public.motivation_result_snapshots where attempt_id='70000000-0000-0000-0000-000000000201'),7,'result snapshot stores score');
+select ok((select interpretation from public.motivation_result_snapshots where attempt_id='70000000-0000-0000-0000-000000000201') not like '%diagnos%','result is descriptive');
+select public.test_as('10000000-0000-0000-0000-000000000002'::uuid);
+select is((select count(*)::int from public.motivation_attempts),0,'Student B cannot read Student A attempt');
+select public.test_as('10000000-0000-0000-0000-000000000001'::uuid);
+select throws_ok($$select public.submit_motivation_attempt('70000000-0000-0000-0000-000000000201'::uuid,'10000000-0000-0000-0000-000000000001'::uuid)$$,'P0001','attempt not submittable','submitted attempt cannot be resubmitted');
+select * from finish(); rollback;
