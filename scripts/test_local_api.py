@@ -64,7 +64,7 @@ def request(path: str, data: Any = None, token: str | None = None, method: str |
         headers["Authorization"] = f"Bearer {token}"
     req = urllib.request.Request(f"{BASE}{path}", data=body, headers=headers, method=method or ("POST" if body is not None else "GET"))
     try:
-        with urllib.request.urlopen(req, timeout=10) as response:
+        with urllib.request.urlopen(req, timeout=30) as response:
             raw = response.read()
             try:
                 return response.status, json.loads(raw or b"null")
