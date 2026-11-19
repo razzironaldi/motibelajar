@@ -1,0 +1,12 @@
+begin;
+select plan(8);
+select has_table('public','goals','goals table exists');
+select has_table('public','study_plan_items','study plan items table exists');
+select has_table('public','weekly_reflections','weekly reflections table exists');
+select has_table('public','notifications','notifications table exists');
+select ok(to_regprocedure('public.publish_file_asset(uuid,uuid,text)') is not null, 'publication function exists');
+select ok(to_regprocedure('public.revoke_file_publication(uuid,uuid)') is not null, 'revocation function exists');
+select has_table('public','public_site_courses','public course projection exists');
+select has_table('public','public_site_announcements','public announcement projection exists');
+select * from finish();
+rollback;
