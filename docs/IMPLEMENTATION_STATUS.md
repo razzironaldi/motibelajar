@@ -26,7 +26,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, student UI/API added; reviewer RPC/API/page added; authenticated reviewer mutation pending |
 | LMS | IN_PROGRESS | Published enrolled course/lesson read, progress RPC/API, Student A/B/Admin isolation tests; enrolled course UI + progress mutation added; quiz workflow pending |
 | Notifications | IN_PROGRESS | Idempotent counseling request/appointment producers + runtime RLS test; broader goal/LMS/assessment producers pending |
-| Admin/BK workspaces | IN_PROGRESS | BK queue role-sensitive; reviewer/admin staff RPCs, API, workspace page added; authenticated role evidence pending |
+| Admin/BK workspaces | VERIFIED | BK queue role-sensitive; reviewer/admin staff RPCs, API, workspace page; authenticated reviewer/admin browser routes and scoped API responses verified locally |
 
 ## Current checkpoint
 
