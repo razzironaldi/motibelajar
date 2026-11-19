@@ -24,7 +24,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
 | Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |
 | Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, API added; UI and reviewer workflow pending |
-| LMS | NOT_STARTED | Existing schema only partial |
+| LMS | IN_PROGRESS | Published enrolled course/lesson read, progress RPC/API, Student A/B/Admin isolation tests; UI and quiz workflow pending |
 | Notifications | IN_PROGRESS | Table/RLS added; event producers pending |
 | Admin/BK workspaces | NOT_STARTED | Existing UI is student-only |
 
