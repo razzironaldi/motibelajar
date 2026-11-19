@@ -29,7 +29,7 @@ begin
  if aid is null then raise exception 'quiz unavailable'; end if;
  if (select count(*) from public.lms_quiz_attempts where assignment_id=aid)>=attempts then raise exception 'attempt limit reached'; end if;
  for item in select * from jsonb_array_elements(coalesce(p_answers,'[]'::jsonb)) loop
-  select k.* into key from public.quiz_answer_keys k where k.quiz_question_version_id=(item->>'versionId')::uuid;
+  select k.* into key from public.quiz_answer_keys k join public.quiz_question_versions v on v.id=k.quiz_question_version_id where v.quiz_question_id=(item->>'questionId')::uuid and v.published_at is not null;
   if key.id is not null and (item->>'optionId')::uuid=any(key.correct_option_ids_protected) then total:=total+coalesce((key.scoring_config_protected->>'points')::numeric,1); end if;
  end loop;
  insert into public.lms_quiz_attempts(assignment_id,student_id,score_protected) values(aid,p_student_id,jsonb_build_object('points',total)) returning id into attempt_id;

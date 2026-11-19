@@ -24,7 +24,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
 | Counseling notes/summary/follow-up | IN_PROGRESS | Revision/audit/publication/follow-up RPCs, APIs, 95 pgTAP runtime/contract tests; browser and parallel HTTP evidence pending |
 | Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, student UI/API added; reviewer RPC/API/page added; authenticated reviewer mutation pending |
-| LMS | IN_PROGRESS | Published enrolled course/lesson read, progress RPC/API, Student A/B/Admin isolation tests; enrolled course UI + progress mutation added; quiz workflow pending |
+| LMS | VERIFIED | Published enrolled course/lesson read, progress RPC/API, protected quiz submit with attempt limit, seeded authenticated browser submission; Student A/B/Admin isolation tests; 114 pgTAP PASS |
 | Notifications | IN_PROGRESS | Idempotent counseling request/appointment producers + runtime RLS test; broader goal/LMS/assessment producers pending |
 | Admin/BK workspaces | VERIFIED | BK queue role-sensitive; reviewer/admin staff RPCs, API, workspace page; authenticated reviewer/admin browser routes and scoped API responses verified locally |
 

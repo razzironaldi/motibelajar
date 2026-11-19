@@ -5,7 +5,7 @@ create table public.lms_progress (id uuid primary key default gen_random_uuid(),
 revoke all on public.lms_courses,public.lms_lessons,public.lms_enrollments,public.lms_progress from anon,authenticated;
 grant select on public.lms_courses,public.lms_lessons,public.lms_enrollments,public.lms_progress to authenticated;
 alter table public.lms_courses enable row level security; alter table public.lms_lessons enable row level security; alter table public.lms_enrollments enable row level security; alter table public.lms_progress enable row level security;
-create policy lms_course_read on public.lms_courses for select to authenticated using(status='published' and exists(select 1 from public.lms_enrollments e where e.course_id=id and e.student_id=(select auth.uid()) and e.status='active'));
+create policy lms_course_read on public.lms_courses for select to authenticated using(lms_courses.status='published' and exists(select 1 from public.lms_enrollments e where e.course_id=lms_courses.id and e.student_id=(select auth.uid()) and e.status='active'));
 create policy lms_lesson_read on public.lms_lessons for select to authenticated using(exists(select 1 from public.lms_enrollments e join public.lms_courses c on c.id=lms_lessons.course_id where e.course_id=lms_lessons.course_id and e.student_id=(select auth.uid()) and e.status='active' and c.status='published'));
 create policy lms_enrollment_read on public.lms_enrollments for select to authenticated using(student_id=(select auth.uid()));
 create policy lms_progress_read on public.lms_progress for select to authenticated using(student_id=(select auth.uid()));
