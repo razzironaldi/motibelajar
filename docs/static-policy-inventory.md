@@ -9,13 +9,13 @@ Tables: 55 | Explicit RLS markers: 15 | Dynamic RLS block: yes
 |---|---|---|---|---|
 | `announcements` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
 | `assessment_answer_keys` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
-| `assessment_answers` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
+| `assessment_answers` | YES (dynamic) | NO (not declared) | <none> | `assessment_answer_student_read` <none> select TO authenticated<br>USING `exists(select 1 from public.assessment_attempts a where a.id=attempt_id and a.student_id=(select auth.uid()))`<br>CHECK `<none>` |
 | `assessment_approvals` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
-| `assessment_assignments` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
-| `assessment_attempts` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
+| `assessment_assignments` | YES (dynamic) | NO (not declared) | <none> | `assessment_assignment_student_read` <none> select TO authenticated<br>USING `student_id=(select auth.uid())`<br>CHECK `<none>` |
+| `assessment_attempts` | YES (dynamic) | NO (not declared) | <none> | `assessment_attempt_student_read` <none> select TO authenticated<br>USING `student_id=(select auth.uid())`<br>CHECK `<none>` |
 | `assessment_options` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
 | `assessment_questions` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
-| `assessment_result_snapshots` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
+| `assessment_result_snapshots` | YES (dynamic) | NO (not declared) | <none> | `assessment_result_student_read` <none> select TO authenticated<br>USING `exists(select 1 from public.assessment_attempts a where a.id=attempt_id and a.student_id=(select auth.uid()))`<br>CHECK `<none>` |
 | `assessment_review_assignments` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
 | `assessment_scoring_configs` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
 | `assessment_versions` | YES (dynamic) | NO (not declared) | <none> | <no policy> |
@@ -66,10 +66,6 @@ Tables: 55 | Explicit RLS markers: 15 | Dynamic RLS block: yes
 ## Intentional policy gaps
 
 - `assessment_answer_keys`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
-- `assessment_answers`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
-- `assessment_assignments`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
-- `assessment_attempts`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
-- `assessment_result_snapshots`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
 - `assessment_scoring_configs`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
 - `counseling_sessions`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
 - `counselor_assignments`: no statically parsed policy. Expected default-deny only if runtime RLS is enabled; verify with pgTAP.
