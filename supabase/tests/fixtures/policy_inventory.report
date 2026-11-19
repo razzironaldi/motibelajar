@@ -1,0 +1,52 @@
+-- Runtime policy report. Execute only against disposable local Supabase.
+select
+  c.relname as table_name,
+  c.relrowsecurity as rls_enabled,
+  c.relforcerowsecurity as force_rls,
+  coalesce((select string_agg(privilege_type || ':' || grantee, ', ' order by privilege_type, grantee)
+            from information_schema.role_table_grants g
+            where g.table_schema='public' and g.table_name=c.relname), '') as table_grants,
+  coalesce((select string_agg(format('%s [%s] USING=%s WITH_CHECK=%s', p.policyname, p.permissive, coalesce(p.qual::text,'<none>'), coalesce(p.with_check::text,'<none>')), E'\n' order by p.policyname)
+            from pg_catalog.pg_policies p
+            where p.schemaname='public' and p.tablename=c.relname), '<no policies>') as policies
+from pg_catalog.pg_class c
+join pg_catalog.pg_namespace n on n.oid=c.relnamespace
+where n.nspname='public' and c.relkind='r'
+order by c.relname;
+
+select
+  table_name,
+  privilege_type,
+  grantee,
+  is_grantable
+from information_schema.role_table_grants
+where table_schema='public'
+order by table_name, privilege_type, grantee;
+
+select
+  schemaname,
+  tablename,
+  policyname,
+  permissive,
+  roles,
+  cmd,
+  qual,
+  with_check
+from pg_catalog.pg_policies
+where schemaname='public'
+order by tablename, policyname;
+
+select
+  n.nspname as schema_name,
+  p.proname as function_name,
+  pg_get_function_identity_arguments(p.oid) as arguments,
+  p.prosecdef as security_definer,
+  p.proconfig as configuration,
+  coalesce(string_agg(r.rolname, ', ' order by r.rolname), '<none>') as execute_grantees
+from pg_proc p
+join pg_namespace n on n.oid=p.pronamespace
+left join aclexplode(coalesce(p.proacl, acldefault('f', p.proowner))) a on true
+left join pg_roles r on r.oid=a.grantee and a.privilege_type='EXECUTE'
+where n.nspname='public'
+  and p.proname in ('current_app_role','is_primary_bk','is_published_public_asset','enforce_operational_primary','validate_assessment_attempt_integrity','validate_assessment_answer_integrity','validate_file_publication_integrity')
+group by n.nspname, p.proname, p.oid;

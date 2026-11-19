@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MotiBelajar
 
-## Getting Started
+Platform modular monolith untuk motivasi belajar, konseling BK privat, dan LMS akademik terbatas.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 + TypeScript + App Router
+- Supabase Auth, PostgreSQL, RLS, Storage
+- Tailwind CSS 4
+- Vercel target deployment
+
+## Current status
+
+Phase 1 foundation:
+
+- Public landing page responsive.
+- Email/password login form.
+- SSR Supabase client and Next.js `proxy.ts` auth boundary.
+- Protected `/app` route.
+- Canonical foundation migration and demo seed.
+- Private-first storage design and public projection tables.
+
+Database migration and RLS runtime verification are pending because Supabase CLI, Docker, and `psql` are not installed in this environment. Never treat the SQL as production-ready until it has been applied to a disposable local Supabase database and authorization tests pass.
+
+## Local setup
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set these values in `.env.local` using the Supabase project dashboard. Never commit `.env.local`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+NEXT_PUBLIC_SUPABASE_URL=[REDACTED]
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[REDACTED]
+NEXT_PUBLIC_APP_ENV=local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Checks
 
-## Learn More
+```bash
+npm run lint
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Supabase
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+supabase start
+supabase db reset
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Apply only to local/demo environments. Do not run `db reset` or demo seed against production. The migration source of truth is `supabase/migrations/0001_foundation.sql`.
 
-## Deploy on Vercel
+## Security boundaries
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- No real student data.
+- No diagnosis or automated risk determination.
+- Private counseling notes, assessment keys/results, submissions, and unpublished files remain private.
+- Anonymous access is limited to explicit public projection tables.
+- Student-facing queries must never select protected answer keys or scoring configuration.
+- Credentials, tokens, passwords, and connection strings stay outside Git.

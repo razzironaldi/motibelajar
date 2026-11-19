@@ -1,0 +1,16 @@
+project_id = "motibelajar"
+
+[api]
+enabled = true
+
+[db]
+major_version = 15
+
+[storage]
+enabled = true
+
+[auth]
+enabled = true
+
+[experimental]
+stack = true

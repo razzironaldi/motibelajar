@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local Supabase runtime
+/supabase/.temp/
+
+# Python cache
+__pycache__/
+*.py[cod]
