@@ -14,7 +14,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Static SQL audit | VERIFIED | `tables=37`, `policies=19`, structural audit PASS |
 | Local Storage HTTP lifecycle | VERIFIED | Existing evidence: upload/download/signed URL/expiry |
 | Storage JS client completion | BLOCKED | Server creates object, client promise timeout remains |
-| Public projection API | IN_PROGRESS | Routes + embeds render; local API returned 503 because Next runtime `.env.local` is not configured; Supabase local HTTP projection remains separately verified |
+| Public projection API | VERIFIED | `.env.local` generated from local status; announcements/courses HTTP 200 with public cache headers; embeds HTTP 200; payload currently empty because seed has no projection rows |
 | Student goals | VERIFIED | Migration, RLS, GET/POST route, SSR UI; browser flow pending |
 | Motivation reflection | IN_PROGRESS | Versioned instrument, 1–4 answers, transactional submit, immutable result, Student A/B tests, API/UI added; browser flow pending |
 | Journal/reflection | IN_PROGRESS | Private student-owned entries, revision history, API/UI, Student A/B/Admin isolation tests; browser flow pending |
