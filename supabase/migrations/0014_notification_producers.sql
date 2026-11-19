@@ -1,0 +1,7 @@
+create or replace function public.notify_goal_created() returns trigger language plpgsql security definer set search_path=pg_catalog,public as $$ begin perform public.enqueue_notification(new.student_id,'goal_created','goal',new.id,'Tujuan belajar baru dibuat','goal:'||new.id::text); return new; end $$;
+create or replace function public.notify_lms_progress() returns trigger language plpgsql security definer set search_path=pg_catalog,public as $$ begin perform public.enqueue_notification(new.student_id,'lms_progress','lms_progress',new.id,'Kemajuan kursus diperbarui','progress:'||new.id::text); return new; end $$;
+create or replace function public.notify_assessment_attempt() returns trigger language plpgsql security definer set search_path=pg_catalog,public as $$ begin perform public.enqueue_notification(new.student_id,'assessment_submitted','assessment_attempt',new.id,'Assessment dikirim','assessment:'||new.id::text); return new; end $$;
+create trigger goals_notification_after_insert after insert on public.goals for each row execute function public.notify_goal_created();
+create trigger lms_progress_notification_after_insert after insert on public.lms_progress for each row execute function public.notify_lms_progress();
+create trigger assessment_notification_after_insert after insert on public.assessment_attempts for each row execute function public.notify_assessment_attempt();
+revoke all on function public.notify_goal_created(),public.notify_lms_progress(),public.notify_assessment_attempt() from public;
