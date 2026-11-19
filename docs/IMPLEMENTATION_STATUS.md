@@ -18,7 +18,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Student goals | VERIFIED | Migration, RLS, GET/POST route, SSR UI; browser flow pending |
 | Motivation reflection | IN_PROGRESS | Versioned instrument, 1–4 answers, transactional submit, immutable result, Student A/B tests, API/UI added; browser flow pending |
 | Journal/reflection | IN_PROGRESS | Private student-owned entries, revision history, API/UI, Student A/B/Admin isolation tests; browser flow pending |
-| SSR/browser E2E | NOT_STARTED | Real browser session not yet executed |
+| SSR/browser E2E | IN_PROGRESS | Local browser harness rendered landing page; protected `/app` returned 307 to `/login`; follow-up navigation timed out, authenticated flow pending |
 | Publication/revocation worker | IN_PROGRESS | DB guarded functions added; Storage copy/delete worker + tests pending |
 | Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; included in 64 pgTAP PASS |
 | Counseling queue/booking | IN_PROGRESS | BK queue, slots, offer/confirm/cancel/reschedule APIs, row locks/advisory overlap guard; browser and parallel HTTP evidence pending |
