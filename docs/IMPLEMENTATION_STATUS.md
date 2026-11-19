@@ -18,7 +18,8 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Student goals | IN_PROGRESS | Migration, RLS, GET/POST route, SSR UI added; browser flow pending |
 | SSR/browser E2E | NOT_STARTED | Real browser session not yet executed |
 | Publication/revocation worker | IN_PROGRESS | DB guarded functions added; Storage copy/delete worker + tests pending |
-| Counseling | NOT_STARTED | Existing schema only partial |
+| Counseling request | VERIFIED | Migration 0004, RLS/helper, authenticated API, student UI; 44 pgTAP tests PASS |
+| Counseling scheduling/summary/follow-up | IN_PROGRESS | Tables and integrity triggers added; BK workflow/publication runtime pending |
 | Assessment | NOT_STARTED | Existing schema only partial |
 | LMS | NOT_STARTED | Existing schema only partial |
 | Notifications | IN_PROGRESS | Table/RLS added; event producers pending |
