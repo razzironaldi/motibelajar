@@ -17,7 +17,6 @@ if (authError) throw new Error(`login ${authError.status ?? 'unknown'} ${authErr
 const uid = auth.user.id;
 const path = `${uid}/js-${Date.now()}.txt`;
 const body = new TextEncoder().encode('12345678901234567890123456789012');
-const started = Date.now();
 const result = await client.storage.from('private-assets').upload(path, body, { contentType: 'text/plain', upsert: false });
 if (result.error) throw result.error;
 const own = await client.storage.from('private-assets').download(path);
