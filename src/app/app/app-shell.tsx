@@ -4,14 +4,22 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/browser";
 
-const navigation = [
+type Role = "student" | "bk_teacher" | "admin" | "reviewer";
+const studentNavigation = [
   { href: "/app", label: "Ringkasan", icon: "⌂" },
   { href: "/app/belajar", label: "Ruang belajar", icon: "◒" },
+  { href: "/app/motivasi", label: "Motivasi", icon: "✦" },
+  { href: "/app/jurnal", label: "Jurnal", icon: "✎" },
   { href: "/app/bk", label: "Pendampingan BK", icon: "◌" },
 ];
+const staffNavigation = [
+  { href: "/app", label: "Ringkasan", icon: "⌂" },
+  { href: "/app/bk", label: "Antrean BK", icon: "◌" },
+];
 
-export default function AppShell({ email, children }: { email: string; children: React.ReactNode }) {
+export default function AppShell({ email, role, children }: { email: string; role: Role; children: React.ReactNode }) {
   const pathname = usePathname();
+  const navigation = role === "student" ? studentNavigation : staffNavigation;
   const router = useRouter();
 
   async function signOut() {

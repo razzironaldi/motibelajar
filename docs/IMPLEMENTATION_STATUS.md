@@ -26,7 +26,7 @@ Environment: local Docker Supabase only. Cloud untouched.
 | Assessment | IN_PROGRESS | Assignment-scoped student question projection, transactional submit, protected scoring/result snapshot, contract tests 100 PASS, API added; UI and reviewer workflow pending |
 | LMS | IN_PROGRESS | Published enrolled course/lesson read, progress RPC/API, Student A/B/Admin isolation tests; UI and quiz workflow pending |
 | Notifications | IN_PROGRESS | Table/RLS added; event producers pending |
-| Admin/BK workspaces | NOT_STARTED | Existing UI is student-only |
+| Admin/BK workspaces | IN_PROGRESS | BK queue now role-sensitive in shared workspace; admin/reviewer workspace and browser-authenticated role evidence pending |
 
 ## Current checkpoint
 

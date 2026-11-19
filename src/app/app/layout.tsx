@@ -7,5 +7,6 @@ export default async function AppLayout({ children }: Readonly<{ children: React
   if (!supabase) redirect("/login");
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
-  return <AppShell email={user.email ?? "Akun siswa"}>{children}</AppShell>;
+  const { data: role } = await supabase.rpc("current_app_role");
+  return <AppShell email={user.email ?? "Akun siswa"} role={role ?? "student"}>{children}</AppShell>;
 }
