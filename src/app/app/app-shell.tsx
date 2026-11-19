@@ -17,6 +17,7 @@ const studentNavigation = [
 const staffNavigation = [
   { href: "/app", label: "Ringkasan", icon: "⌂" },
   { href: "/app/bk", label: "Antrean BK", icon: "◌" },
+  { href: "/app/staff", label: "Operasi", icon: "▦" },
 ];
 
 export default function AppShell({ email, role, children }: { email: string; role: Role; children: React.ReactNode }) {
