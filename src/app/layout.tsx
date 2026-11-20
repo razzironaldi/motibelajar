@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "MotiBelajar — Ruang tumbuh siswa",
-  description: "Pendampingan belajar dan konseling siswa yang aman, terarah, dan manusiawi.",
+  description: "Ruang belajar yang tumbuh bersama rasa ingin tahu, arah, dan dukungan yang aman.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
